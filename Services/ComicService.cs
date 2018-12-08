@@ -18,15 +18,27 @@ namespace xkcd.Services
 
         public async Task<ComicViewModel> GetComic(int? comicId)
         {
-            // TODO: refactor url generation
-            string url = comicId != null ? string.Concat(comicId.ToString(), "/", ComicsUrlSegment) : ComicsUrlSegment;
             var comic = new ComicViewModel();
             var serializer = new DataContractJsonSerializer(typeof(ComicViewModel));
 
-            var streamTask = await _client.GetStreamAsync(url);
-            comic = serializer.ReadObject(streamTask) as ComicViewModel;
-            
+            var response = await _client.GetAsync(GetComicUrl(comicId));
+
+            if (!response.IsSuccessStatusCode) {
+                return null;
+            }
+            comic = serializer.ReadObject(await response.Content.ReadAsStreamAsync()) as ComicViewModel; 
+
             return comic;
+        }
+
+        private string GetComicUrl(int? comicId)
+        {
+            return comicId != null ? string.Concat(comicId.ToString(), "/", ComicsUrlSegment) : ComicsUrlSegment;
+        }
+
+        public int GetNextComicNumber(int previousNumber, bool isPrevious)
+        {
+            return isPrevious ? previousNumber - 1 : previousNumber + 1; 
         }
     }
 }

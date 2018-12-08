@@ -22,5 +22,7 @@ namespace xkcd.Models
         public string Title { get; set; }
         [DataMember(Name = "transcript")]
         public string Transcript { get; set; }
+        [IgnoreDataMember]
+        public int MaxNumber { get; set; }
     }
 }

@@ -4,19 +4,36 @@
 
 @{
     ViewData["Title"] = "Home Page";
-    int comicNumber = Model.Number - 1;
+    int previousComic = Model.Number - 1;
+    int nextComic = Model.Number + 1;
 }
 
 <section>
-    <h1>XKCD</h1>
-    <div class="text-center">
-        <h2>@Model.Title</h2>
-        <img src="@Model.ImageUrl" alt="@Model.AlternatativeText" />
-    </div>
-    <div class="text-left">
-        @if(comicNumber > 1) {
-            @Html.ActionLink("Previous", "Index", "Home", new { comicId = @comicNumber }, null)
-        }
+    <div class="row">
+        <div class="col-md-12">
+            <h1>XKCD</h1>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h2>@Model.Number - @Model.Title</h2>
+                    <h3><strong>Latest Comic: </strong> @Model.MaxNumber</h3>
+                    <img src="@Model.ImageUrl" alt="@Model.AlternatativeText" />
+                    <p>@Model.Transcript</p>
+                </div>
+            </div>
+            <div class="row">
+                @if(Model.Number > 1) {
+                    <div class="col-md-6 text-left">
+                        @Html.ActionLink("Previous", "Index", "Home", new { comicId = @previousComic, previous = true }, null)
+                    </div>
+                }
+
+                @if(Model.Number < Model.MaxNumber) {
+                    <div class="col-md-6 text-right">
+                        @Html.ActionLink("Next", "Index", "Home", new { comicId = @nextComic, previous = false}, null)
+                    </div>
+                }            
+            </div>
+        </div>
     </div>
 </section>
 
