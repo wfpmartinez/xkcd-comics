@@ -4,20 +4,27 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Http;
+using xkcd.Services;
 using xkcd.Models;
 
 namespace xkcd.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly ComicService _comicService;
+
+        public HomeController(ComicService comicService)
         {
-            return View();
+            _comicService = comicService;
         }
 
-        public IActionResult Privacy()
+        [Route("/")]
+        [Route("comic/{comicId?}")]
+        public async Task<IActionResult> Index(int? comicId)
         {
-            return View();
+            var model = await _comicService.GetComic(comicId);
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
