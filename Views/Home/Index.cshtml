@@ -8,13 +8,14 @@
 }
 
 <section>
+    <h1>XKCD</h1>
     <div class="text-center">
-        <h1>@Model.Title</h1>
+        <h2>@Model.Title</h2>
         <img src="@Model.ImageUrl" alt="@Model.AlternatativeText" />
     </div>
     <div class="text-left">
         @if(comicNumber > 1) {
-            @Html.ActionLink("Previous", "Index", "Home", new { comicId = "@comicNumber" }, null)
+            @Html.ActionLink("Previous", "Index", "Home", new { comicId = @comicNumber }, null)
         }
     </div>
 </section>
