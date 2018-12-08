@@ -1,8 +1,21 @@
-﻿@{
+﻿@using xkcd.Models;
+
+@model ComicViewModel;
+
+@{
     ViewData["Title"] = "Home Page";
+    int comicNumber = Model.Number - 1;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section>
+    <div class="text-center">
+        <h1>@Model.Title</h1>
+        <img src="@Model.ImageUrl" alt="@Model.AlternatativeText" />
+    </div>
+    <div class="text-left">
+        @if(comicNumber > 1) {
+            @Html.ActionLink("Previous", "Index", "Home", new { comicId = "@comicNumber" }, null)
+        }
+    </div>
+</section>
+
